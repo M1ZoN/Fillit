@@ -1,20 +1,12 @@
 #ifndef FILLIT_H
 # define FILLIT_H
 
-# define USAGE ft_putstr("usage: fillit input_file\n")
-
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
 # include <fcntl.h>
 # include "libft/libft.h"
-# include "libft/get_next_line.h"
-
-/*
-** Global
-*/
-
-int		g_size;
+# include "get_next_line.h"
 
 /*
 ** Validation

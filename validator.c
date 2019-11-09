@@ -1,81 +1,57 @@
 #include "fillit.h"
 
-/*
-** checkchars loops through each string
-** given by ft_separate. The while loop looks at
-** dots, sharps, and nl chars. If it sees a dot,
-** increase the dot count and so on so forth
-** the rest of the characters. If there is a 21st
-** index in the given string, it MUST be a new line
-** char or else the input file is not valid.
-** Using a ternary statement to save space, we return
-** (1) or (0) based on the remainders from each variable's
-** result. There will always be 12 dots and 4 sharps
-** in a valid tetrimino piece.
-** It adds (+ 1) to nl because the last tetrimino
-** will only have 4 nl chars so we need to force
-** the total to be divisable by 5 to account
-** for the nl chars found between more than one tetriminos.
-*/
-
-int		checkchars(char *str, int d, int s, int nl)
+int		valid_chars(char *str)
 {
 	int i;
+	int	dots;
+	int	sharps;
 
 	i = 0;
-	while (str[i] == '.' || str[i] == '#' || str[i] == '\n')
+	while (str[i] == '.' || str[i] == '#')
 	{
-		(str[i] == '.') ? d++ : d;
-		(str[i] == '#') ? s++ : s;
-		(str[i] == '\n') ? nl++ : nl;
-		if (i + 1 == 21)
-			if (str[i] != '\n')
-				return (0);
+		dots += (str[i] == '.');
+		sharps += (str[i] == '#');
 		i++;
 	}
-	return (((d % 12) == 0) && ((s % 4) == 0) && ((nl + 1) % 5) == 0) ? 1 : 0;
+	return ((dots == 12) && (sharps == 4) && (ft_strlen(str) == 20));
 }
 
-/*
-** checksides loops through the given string
-** and converts each sharp it encounters
-** in the while loop to a letter.
-** A series of ternary operators search for sharps OR letters
-** (depending on the sharp that we're on in the loop).
-** When it finds a sharp, it uses pointer arithmetic to look
-** before, in front of, underneath (bottom side) and above (top side)
-** the operator for other sharps. It only enters the statement if
-** there is an index before, after, above or below with the first checks.
-** If there are sharps on any side, the sidecount variable
-** increases by one. Square shapes have a total of 8 sides touching
-** while all other pieces have 6. A ternary operator is used
-** to return either (1) or (0) depending on whether or not
-** the current piece's shape is a valid tertimino shape
-*/
-
-int		checksides(char *str, char letter)
+int		valid_tetrimino(char *tet, char letter)
 {
 	int		i;
-	int		sidecount;
+	int		n;
 
 	i = -1;
-	sidecount = 0;
-	while (str[++i])
+	n = 0;
+	while (tet[++i])
 	{
-		if (str[i] == '#')
+		if (tet[i] == '#')
 		{
-			str[i] = letter;
-			(str[i - 1] && (str[i - 1] == '#' ||
-				str[i - 1] == letter)) ? sidecount++ : sidecount;
-			(str[i + 1] && (str[i + 1] == '#' ||
-				str[i + 1] == letter)) ? sidecount++ : sidecount;
-			(str[i + 5] && (str[i + 5] == '#' ||
-				str[i + 5] == letter)) ? sidecount++ : sidecount;
-			(str[i - 5] && (str[i - 5] == '#' ||
-				str[i - 5] == letter)) ? sidecount++ : sidecount;
+			tet[i] = letter;
+			n += (tet[i - 1] && (tet[i - 1] == '#' || tet[i - 1] == letter));
+			n += (tet[i + 1] && (tet[i + 1] == '#' || tet[i + 1] == letter));
+			n += (tet[i + 4] && (tet[i + 4] == '#' || tet[i + 4] == letter));
+			n += (tet[i - 4] && (tet[i - 4] == '#' || tet[i - 4] == letter));
 		}
 	}
-	return (sidecount == 6 || sidecount == 8 ? 1 : 0);
+	return (n == 6 || n == 8);
+}
+
+int		valid_input(char	**tetriminoes)
+{
+	int		i;
+	int		flag;
+	char	letter;
+
+	i = 0;
+	flag = 1;
+	letter = 'A';
+	while (tetriminoes[i] && flag)
+	{
+		flag = (valid_chars(tetriminoes[i]) && valid_tetrimino(tetriminoes[i], letter++));
+		i++;
+	}	
+	return(flag);
 }
 
 /*
