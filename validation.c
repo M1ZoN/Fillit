@@ -54,6 +54,11 @@ int		valid_input(char	**tetriminoes)
 	return(flag);
 }
 
+
+
+
+
+
 /*
 ** Placement check is very similar to checksides except
 ** that it looks at pieces that have already been placed.
@@ -67,26 +72,25 @@ int		valid_input(char	**tetriminoes)
 ** another letter, then it does not increase the side count. If the sidecount
 ** us not 6 or 8, then the current piece being placed must be picked up
 ** and the next tried instead.
-*/
 
-int		placement_check(char *piece, char c, int x)
+
+int		check_try(char *piece, char c, int x)
 {
 	int		i;
-	int		sidecount;
+	int		sides;
 
 	i = -1;
-	sidecount = 0;
+	sides = 0;
 	while (piece[++i])
 	{
 		if (piece[i] == c)
 		{
-			(piece[i - 1] && (piece[i - 1] == c)) ? sidecount++ : sidecount;
-			(piece[i + 1] && (piece[i + 1] == c)) ? sidecount++ : sidecount;
-			(piece[i - x - 1] && (piece[i - x - 1] == c))
-				? sidecount++ : sidecount;
-			(piece[i + x + 1] && (piece[i + x + 1] == c))
-				? sidecount++ : sidecount;
+			sides += (piece[i - 1] && (piece[i - 1] == c));
+			sides += (piece[i + 1] && (piece[i + 1] == c));
+			sides += (piece[i - x - 1] && (piece[i - x - 1] == c));
+			sides += (piece[i + x + 1] && (piece[i + x + 1] == c));
 		}
 	}
-	return (sidecount == 6 || sidecount == 8 ? 1 : 0);
+	return (sides == 6 || sides == 8);
 }
+*/

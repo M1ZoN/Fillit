@@ -37,7 +37,7 @@ int		main(int ac, char **av)
 			board_size++;
 		board = ft_strnew(board_size * (board_size + 1));
 		if (valid_input(tetriminoes) && count_tetriminoes <= 26)
-			builder(board, tetriminoes, board_size);
+			create_map(board, tetriminoes, board_size, 1);
 		else
 			ft_putendl("Error");
 		ft_putchar('\n');
