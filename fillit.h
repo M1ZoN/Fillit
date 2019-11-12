@@ -8,27 +8,15 @@
 # include "libft/libft.h"
 # include "get_next_line.h"
 
-/*
-** Validation
-*/
+int		valid_chars(char *str);
+int		valid_tetrimino(char *tet, char letter);
+int		valid_input(char	**tetriminoes);
 
-int		placement_check(char *piece, char c, int x);
-int		checkchars(char *str, int d, int s, int nl);
-int		checksides(char *str, char letter);
 
-/*
-** Board management
-*/
-
-void	builder(char *board, char **pieces, int size);
-
-/*
-** Piece Solve & Drop
-*/
-
-int		solve(char *board, char **pieces, int i);
-int		backtrack(char *board, char **pieces, char letter);
-int		place(char *piece, char *board, int i);
-void	pickup(char *board, int c);
+int		does_fit(char *piece, char c, int x);
+int		try_to_put(char *board, char *tetrimino, int i);
+void	redo(char *board, char c);
+int		solvable(char *board, char **tetriminoes, int i);
+void	create_map(char *board, char **tetriminoes, int board_size, int flag);
 
 #endif
